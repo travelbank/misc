@@ -7,24 +7,27 @@ set -e
 #
 # ./raven-distribute.sh /path/to/ipa <version> <build> <feature name>
 #
-# ./raven-distribute.sh ./TravelBank.ipa 4.3.0 1 feature-proj-op-500
+# ./raven-distribute.sh ./TravelBank.ipa 4.3.0 1 proj-op-500
 #===============================================================================
 
-TARGET="build.travelbank.com"
+TARGET="build.vpc.travelbank.com"
+BUILD_SERVER_ROOT="/home/admin/builds"
 PROJECT="TravelBank"
 FILE=$1
 VERSION=$2
 BUILD=$3
 BRANCH_NAME=${BRANCH_NAME:-$4}
 FEATURE=${BRANCH_NAME/\//-}
-BUILD_TIME=`stat -f "%Sm" -t "%Y-%m-%d %H:%M:%S" $1`
+FEATURE_DIRECTORY="$BUILD_SERVER_ROOT/$FEATURE"
+PLATFORM_DIRECTORY="$FEATURE_DIRECTORY/ios"
+BUILD_TIME=`stat --format "%x" $1`
 SECURE_TARGET="https://${TARGET}"
 
 echo $BRANCH_NAME
 echo $FEATURE
 
 echo "Generating ${PROJECT}-${VERSION}-${BUILD}.plist"
-cat > /Library/WebServer/Documents/${FEATURE}/ios/${PROJECT}-${VERSION}-${BUILD}.plist <<PLIST_DELIM
+cat > ${PLATFORM_DIRECTORY}/${PROJECT}-${VERSION}-${BUILD}.plist <<PLIST_DELIM
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
@@ -64,7 +67,7 @@ cat > /Library/WebServer/Documents/${FEATURE}/ios/${PROJECT}-${VERSION}-${BUILD}
 PLIST_DELIM
 
 echo "Generating index.html"
-cat > /Library/WebServer/Documents/${FEATURE}/ios/index.html <<INDEX_DELIM
+cat > ${PLATFORM_DIRECTORY}/index.html <<INDEX_DELIM
 <!DOCTYPE html>
 <html>
   <head>
