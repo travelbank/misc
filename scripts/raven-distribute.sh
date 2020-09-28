@@ -26,46 +26,6 @@ SECURE_TARGET="https://${TARGET}"
 echo $BRANCH_NAME
 echo $FEATURE
 
-echo "Generating ${PROJECT}-${VERSION}-${BUILD}.plist"
-cat > ${PLATFORM_DIRECTORY}/${PROJECT}-${VERSION}-${BUILD}.plist <<PLIST_DELIM
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-<plist version="1.0">
-<dict>
- <key>items</key>
- <array>
-
-  <dict>
-   <key>assets</key>
-   <array>
-    <dict>
-     <key>kind</key>
-     <string>software-package</string>
-     <key>url</key>
-     <string>${SECURE_TARGET}/${FEATURE}/ios/${PROJECT}.ipa</string>
-    </dict>
-   </array>
-
-   <key>metadata</key>
-   <dict>
-    <key>bundle-identifier</key>
-    <string>com.travelbank.app.preview</string>
-    <key>bundle-version</key>
-    <string>${VERSION}</string>
-    <key>kind</key>
-    <string>software</string>
-    <key>subtitle</key>
-    <string>${PROJECT}</string>
-    <key>title</key>
-    <string>${PROJECT}</string>
-   </dict>
-
-  </dict>
- </array>
-</dict>
-</plist>
-PLIST_DELIM
-
 echo "Generating index.html"
 cat > ${PLATFORM_DIRECTORY}/index.html <<INDEX_DELIM
 <!DOCTYPE html>
